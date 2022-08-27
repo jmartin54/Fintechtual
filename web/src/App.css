@@ -1,0 +1,11 @@
+.header {
+  margin: 4em;
+}
+
+.card {
+  flex: 1;
+  margin: 2em;
+  padding: 2em;
+  background-color: antiquewhite;
+  border-radius: 2em;
+}

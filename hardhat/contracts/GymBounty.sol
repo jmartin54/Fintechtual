@@ -5,7 +5,7 @@ contract GymBounty {
 
      constructor() {
          owner = payable(msg.sender);
-         price30 = 30 * 3 ether; // deployed on MATIC
+         price30 = 30 * 1 ether; // deployed on MATIC
      }
 
     address payable public owner;
@@ -28,17 +28,16 @@ contract GymBounty {
     mapping( uint => uint) public treasury; // day => totalBalance
     mapping (uint => uint) public fulfillments ; // day = > fullfilledCheckinCount
     function commit() payable external {
-        require(msg.value > price30, "GymBounty: msg value too low");
+        require(msg.value >= price30, "GymBounty: msg value too low");
         /* spread price30 over 30 days */
         // get next 30 days
         uint today = block.timestamp / 1 days;
-        uint i = 1;
 
         require(!commitments[msg.sender][today + 1].commited, "GymBounty: you've already commit to the next few days. Comeback when your outstanding commitments expire.");
         // for day
         //      commitments[msg.sender][day].committed = true;
         //      treasury[day] += price30 / 30;
-        while(i <= 30){ 
+        for(uint i = 1; i <= 30; i++) { 
             uint day = today + i;
             commitments[msg.sender][day].commited = true;
             treasury[day] += price30 / 30;
@@ -58,7 +57,6 @@ contract GymBounty {
         /* pull out last 30 days */
         // get last 30 days
         uint today = block.timestamp / 1 days;
-        uint i = 1;
         // amount = 0
         uint amount = 0;
         // for day
@@ -68,7 +66,7 @@ contract GymBounty {
         //          amount += treasury[day] / fulfillments[day];
         // 
         // if(amount > 0) msg.sender.transfer(amount);
-        while(i <= 30){ 
+        for(uint i = 1; i <= 30; i++) { 
             uint day = today - i;
             Commitment memory commitment = commitments[msg.sender][day];
             if(

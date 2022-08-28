@@ -1,8 +1,8 @@
 import { sequence } from "0xsequence";
 import { useCallback, useState } from "react";
 import "./App.css";
-import GymBounty from "./GymBounty";
-import LandingPage from "./LandingPage";
+import LoadAccountInfo from "./LoadAccountInfo";
+import LandingPage from "./Pages/LandingPage";
 import WrongNetworkPage from "./WrongNetworkPage";
 
 function App() {
@@ -37,7 +37,10 @@ function App() {
         <WrongNetworkPage onClickOpenWallet={openWallet} />
       )}
       {connection != null && connection.chainId == "0x013881" && (
-        <GymBounty address={address ?? ""} onClickOpenWallet={openWallet} />
+        <LoadAccountInfo
+          walletAddress={address ?? ""}
+          onLogout={() => setConnection(null)}
+        />
       )}
     </div>
   );
